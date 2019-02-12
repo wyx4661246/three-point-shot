@@ -1,4 +1,3 @@
-
 package com.malzahar.tps.remoting.common;
 
 public enum RemotingCommandType {
