@@ -5,9 +5,14 @@ import com.malzahar.tps.remoting.netty.NettyClientConfig;
 import com.malzahar.tps.remoting.netty.NettyServerConfig;
 import com.malzahar.tps.remoting.netty.NettySystemConfig;
 import com.malzahar.tps.remoting.protocol.RemotingCommand;
+import com.malzahar.tps.store.MessageStoreConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BrokerStartup {
@@ -19,8 +24,14 @@ public class BrokerStartup {
         start(createBrokerController(args));
     }
 
-    public static BrokerController start(BrokerController controller) {
-        return null;
+    public static void start(BrokerController controller) {
+
+        try {
+            controller.start();
+        }catch (Exception e){
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
     public static BrokerController createBrokerController(String[] args) {
@@ -34,29 +45,38 @@ public class BrokerStartup {
             final BrokerConfig brokerConfig = new BrokerConfig();
             final NettyServerConfig nettyServerConfig = new NettyServerConfig();
             final NettyClientConfig nettyClientConfig = new NettyClientConfig();
+            final MessageStoreConfig messageStoreConfig = new MessageStoreConfig();
 
-        } catch (Exception e) {
+            InputStream in = new BufferedInputStream(new FileInputStream(""));//todo---配置文件路径
+            Properties properties = new Properties();
+            properties.load(in);
 
-        }
+            final BrokerController controller = new BrokerController(brokerConfig, nettyServerConfig, nettyClientConfig, messageStoreConfig);
+            controller.registerConfig(properties);
 
-        final BrokerController controller = new BrokerController();
+            controller.initialize();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            private volatile boolean hasShutdown = false;
-            private AtomicInteger shutdownTimes = new AtomicInteger(0);
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                private volatile boolean hasShutdown = false;
+                private AtomicInteger shutdownTimes = new AtomicInteger(0);
 
-            public void run() {
-                synchronized (this) {
-                    if (!this.hasShutdown) {
-                        this.hasShutdown = true;
-                        long beginTime = System.currentTimeMillis();
-                        controller.shutdown();
-                        long consumingTimeTotal = System.currentTimeMillis() - beginTime;
+                @Override
+                public void run() {
+                    synchronized (this) {
+                        if (!this.hasShutdown) {
+                            this.hasShutdown = true;
+                            long beginTime = System.currentTimeMillis();
+                            controller.shutdown();
+                            long consumingTimeTotal = System.currentTimeMillis() - beginTime;
+                        }
                     }
                 }
-            }
-        }, "ShutdownHook"));
-
-        return controller;
+            }, "ShutdownHook"));
+            return controller;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        return null;
     }
 }
