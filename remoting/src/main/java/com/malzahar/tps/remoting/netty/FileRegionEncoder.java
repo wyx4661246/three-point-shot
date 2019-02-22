@@ -25,7 +25,8 @@ public class FileRegionEncoder extends MessageToByteEncoder<FileRegion> {
      *
      * @param ctx the {@link ChannelHandlerContext} which this {@link
      * MessageToByteEncoder} belongs to
-     * @param msg the message to encode
+     * @param msg the message to enco
+     *            de
      * @param out the {@link ByteBuf} into which the encoded message will be written
      * @throws Exception is thrown if an error occurs
      */
