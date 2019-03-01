@@ -14,6 +14,7 @@
         <module>example</module>
         <module>common</module>
         <module>store</module>
+        <module>namesrv</module>
     </modules>
 
     <properties>
