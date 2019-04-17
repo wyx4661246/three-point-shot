@@ -47,12 +47,14 @@ public class BrokerStartup {
             final NettyClientConfig nettyClientConfig = new NettyClientConfig();
             final MessageStoreConfig messageStoreConfig = new MessageStoreConfig();
 
-            InputStream in = new BufferedInputStream(new FileInputStream(""));//todo---配置文件路径
+            InputStream in = new BufferedInputStream(new FileInputStream(System.getProperty("user.dir") + "/broker/src/main/resources/properties/broker.properties"));//todo---配置文件相对路径
             Properties properties = new Properties();
             properties.load(in);
 
             final BrokerController controller = new BrokerController(brokerConfig, nettyServerConfig, nettyClientConfig, messageStoreConfig);
             controller.registerConfig(properties);
+
+            //namesrv地址校验 TODO
 
             controller.initialize();
 

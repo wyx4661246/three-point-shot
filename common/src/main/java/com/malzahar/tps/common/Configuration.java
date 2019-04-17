@@ -152,6 +152,24 @@ public class Configuration {
         return null;
     }
 
+    public String getConfig(String key) {
+        try {
+            readWriteLock.readLock().lockInterruptibly();
+
+            try {
+
+                return this.allConfigs.getProperty(key);
+
+            } finally {
+                readWriteLock.readLock().unlock();
+            }
+        } catch (InterruptedException e) {
+            log.error("getAllConfigs lock error");
+        }
+
+        return null;
+    }
+
 
     private void merge(Properties from, Properties to) {
         for (Object key : from.keySet()) {

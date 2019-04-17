@@ -2,6 +2,8 @@ package com.malzahar.tps.namesrv;
 
 import com.malzahar.tps.common.Namesrv.NamesrvConfig;
 import com.malzahar.tps.common.ThreadFactoryImpl;
+import com.malzahar.tps.common.protocol.RequestCode;
+import com.malzahar.tps.namesrv.processor.DefaultRequestProcessor;
 import com.malzahar.tps.namesrv.processor.ServiceRegistrationProcessor;
 import com.malzahar.tps.remoting.RemotingServer;
 import com.malzahar.tps.remoting.netty.NettyClientConfig;
@@ -10,13 +12,12 @@ import com.malzahar.tps.remoting.netty.NettyServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * server端:1、连接注册，broker，cusm,pro
+ * server端:1、连接注册，broker，cusm,  pro
  * client端:
  * 定时任务:broker状态监测
  * 心跳:
@@ -43,9 +44,7 @@ public class NamesrvController {
         this.remotingExecutor = Executors.newFixedThreadPool(nettyServerConfig.getServerWorkerThreads(), new ThreadFactoryImpl("RemotingExecutorThread_"));
 
         remotingServer = new NettyRemotingServer(this.nettyServerConfig);
-        remotingServer.registerDefaultProcessor(new ServiceRegistrationProcessor(), remotingExecutor);
-
-
+        registerProcessor();
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             private volatile boolean hasShutdown = false;
             private AtomicInteger shutdownTimes = new AtomicInteger(0);
@@ -75,4 +74,9 @@ public class NamesrvController {
         remotingServer.shutdown();
     }
 
+    private void registerProcessor() {
+
+        this.remotingServer.registerDefaultProcessor(new DefaultRequestProcessor(this), this.remotingExecutor);
+        this.remotingServer.registerProcessor(RequestCode.ADD_BROKER, new ServiceRegistrationProcessor(this), this.remotingExecutor);
+    }
 }
