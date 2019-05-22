@@ -38,6 +38,8 @@ public class NamesrvConfig {
     private boolean clusterTest = false;
     private boolean orderMessageEnable = false;
 
+    private int clientCallbackExecutorThreads = Runtime.getRuntime().availableProcessors();
+
     public boolean isOrderMessageEnable() {
         return orderMessageEnable;
     }
@@ -84,5 +86,13 @@ public class NamesrvConfig {
 
     public void setConfigStorePath(final String configStorePath) {
         this.configStorePath = configStorePath;
+    }
+
+    public int getClientCallbackExecutorThreads() {
+        return clientCallbackExecutorThreads;
+    }
+
+    public void setClientCallbackExecutorThreads(int clientCallbackExecutorThreads) {
+        this.clientCallbackExecutorThreads = clientCallbackExecutorThreads;
     }
 }

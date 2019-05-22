@@ -3,7 +3,13 @@ package com.malzahar.tps.common.protocol;
 public class RequestCode {
 
 
-    public static final int ADD_BROKER = 301;
+    public static final int ADD_BROKER = 2301;
+    public static final int SEND_MESSAGE_ = 2310;
+
+    public static final int GET_ROUTEINTO_BY_TOPIC_ = 2105;
+    public static final int QUERY_AND_CREATE_TOPIC_ = 2106;
+
+
 
 
 

@@ -52,8 +52,10 @@ public class BrokerController {
         remotingClient.start();
         //namesrv注册
         RegisterBrokerRequestHeader registerBrokerRequestHeader = new RegisterBrokerRequestHeader();
-        registerBrokerRequestHeader.setBrokerName("");
+        registerBrokerRequestHeader.setBrokerId(0l);
+        registerBrokerRequestHeader.setBrokerName("broker-a");
         registerBrokerRequestHeader.setBrokerAddr(getBrokerAddr());
+        registerBrokerRequestHeader.setHaServerAddr(getBrokerAddr());
         RemotingCommand request = RemotingCommand.createRequestCommand(RequestCode.ADD_BROKER, registerBrokerRequestHeader);
         RemotingCommand response = remotingClient.invokeSync(configuration.getConfig("namesrv.addr"), request, 1000l);
         logger.info("==== test {}", JSON.toJSONString(response));
