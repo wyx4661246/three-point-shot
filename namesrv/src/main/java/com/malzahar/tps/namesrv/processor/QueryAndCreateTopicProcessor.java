@@ -71,7 +71,6 @@ public class QueryAndCreateTopicProcessor implements NettyRequestProcessor {
             namesrvController.getRemotingClient().invokeAsync(activeBrokerAdd, requestCreateTopic, 1000l, null);
         }
 
-
         topicRouteData = new TopicRouteData();
 
         byte[] content = topicRouteData.encode();

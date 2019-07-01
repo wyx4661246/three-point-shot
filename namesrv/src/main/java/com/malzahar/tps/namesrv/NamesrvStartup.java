@@ -17,7 +17,7 @@ public class NamesrvStartup {
         final NamesrvConfig namesrvConfig = new NamesrvConfig();
         final NettyServerConfig nettyServerConfig = new NettyServerConfig();
         nettyServerConfig.setListenPort(3369);
-        NamesrvController namesrvController = new NamesrvController(null, nettyServerConfig);
+        NamesrvController namesrvController = new NamesrvController(namesrvConfig, nettyServerConfig);
         return namesrvController;
     }
 
