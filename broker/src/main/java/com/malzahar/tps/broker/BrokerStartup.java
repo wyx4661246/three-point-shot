@@ -18,9 +18,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BrokerStartup {
 
     private final static Logger logger = LoggerFactory.getLogger(BrokerStartup.class);
+    public static String configFile = null;
+
 
     public static void main(String[] args) {
-        logger.info("====================");
         start(createBrokerController(args));
     }
 
@@ -51,6 +52,7 @@ public class BrokerStartup {
             Properties properties = new Properties();
             properties.load(in);
 
+            brokerConfig.setNamesrvAddr("127.0.0.1:3369");
             final BrokerController controller = new BrokerController(brokerConfig, nettyServerConfig, nettyClientConfig, messageStoreConfig);
             controller.registerConfig(properties);
 

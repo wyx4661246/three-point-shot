@@ -99,6 +99,7 @@ public class NamesrvController {
 
     public void start() throws Exception {
         remotingServer.start();
+        remotingClient.start();
     }
 
     public void shutdown() {

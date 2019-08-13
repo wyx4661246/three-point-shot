@@ -2,6 +2,7 @@ package com.malzahar.tps.common;
 
 
 import com.malzahar.tps.common.constant.PermName;
+import com.malzahar.tps.common.message.MessageExt;
 
 public class TopicConfig {
     private static final String SEPARATOR = " ";
@@ -101,6 +102,10 @@ public class TopicConfig {
 
     public void setTopicFilterType(TopicFilterType topicFilterType) {
         this.topicFilterType = topicFilterType;
+    }
+
+    public void setTopicFilterType(String sysFlag) {
+        // todo this.topicFilterType = MessageExt.parseTopicFilterType(sysFlag);
     }
 
     public int getTopicSysFlag() {

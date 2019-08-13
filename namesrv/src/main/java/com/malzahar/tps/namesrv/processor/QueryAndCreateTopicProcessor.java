@@ -9,7 +9,6 @@ import com.malzahar.tps.remoting.netty.NettyRequestProcessor;
 import com.malzahar.tps.remoting.protocol.RemotingCommand;
 import com.malzahar.tps.remoting.protocol.ResponseCode;
 import com.malzahar.tps.remoting.protocol.header.namesrv.CreateTopicRequestHeader;
-import com.malzahar.tps.remoting.protocol.header.namesrv.GetRouteInfoRequestHeader;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ public class QueryAndCreateTopicProcessor implements NettyRequestProcessor {
 
         }
         final RemotingCommand response = RemotingCommand.createResponseCommand(null);
-        final CreateTopicRequestHeader requestHeader = (CreateTopicRequestHeader) request.decodeCommandCustomHeader(GetRouteInfoRequestHeader.class);
+        final CreateTopicRequestHeader requestHeader = (CreateTopicRequestHeader) request.decodeCommandCustomHeader(CreateTopicRequestHeader.class);
 
         TopicRouteData topicRouteData = this.namesrvController.getRouteInfoManager().pickupTopicRouteData(requestHeader.getTopic());
 
